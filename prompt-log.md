@@ -31,3 +31,13 @@
 - เปลี่ยนสถานะ spec จาก Draft v1 เป็น Draft v2 และอัปเดตวันที่เป็น 2569-09-16
 
 ---
+
+## [2026-09-16] [เวลาไม่ระบุ] คำสั่ง: /plan
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์: specs/001-booking/spec.md (v2)
+- ผลลัพธ์: specs/001-booking/plan.md
+- Constraint ที่ AI ยังไม่ได้ใช้: ไม่มี
+- สิ่งที่ AI บอกว่าอยากเดาแต่ไม่ได้เดา: Q-01 และ Q-02 ถูกคงไว้เป็น Open Questions ตาม spec
+
+---

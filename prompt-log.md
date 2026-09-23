@@ -63,3 +63,15 @@
 - สถานะ T-01: เสร็จ รอทีมตรวจ
 
 ---
+
+## [2026-09-23] [เวลาไม่ระบุ] คำสั่ง: /implement T-09 specs/001-booking/tasks.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: frontend/src/pages/BookingPage.jsx, frontend/src/__tests__/BookingPage.test.jsx
+- ไฟล์ที่แก้: frontend/src/api/client.js, specs/001-booking/tasks.md, prompt-log.md
+- ผล test: `npm test -- --run src/__tests__/BookingPage.test.jsx` ผ่าน 2 tests
+- ฟังก์ชันที่ทำ: ใช้ mock API แสดงวัน/ช่วงเวลาภายใน 30 วัน ปิดการเลือกช่วงที่เต็มด้วยสีเทา และโหลดช่วงเวลาใหม่เมื่อเปลี่ยนแพ็กเกจ
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี; ไม่แก้ `App.jsx` เพราะไม่ได้อยู่ในไฟล์ที่แตะของ T-09
+- สถานะ T-09: เสร็จ รอทีมตรวจ
+
+---

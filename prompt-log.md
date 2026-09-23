@@ -41,3 +41,25 @@
 - สิ่งที่ AI บอกว่าอยากเดาแต่ไม่ได้เดา: Q-01 และ Q-02 ถูกคงไว้เป็น Open Questions ตาม spec
 
 ---
+
+## [2026-09-23] [เวลาไม่ระบุ] คำสั่ง: /tasks specs/001-booking/spec.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์: specs/001-booking/spec.md, specs/001-booking/plan.md
+- ผลลัพธ์: specs/001-booking/tasks.md จำนวน 15 tasks
+- สรุป: แตกงานตามลำดับ schema, backend API, frontend, การเชื่อมต่อ และการทดสอบ พร้อมตรวจ AC และ Constraint ครบทุก ID
+- งานที่รอ Open Questions: T-05 รอ Q-02 และ T-06 รอ Q-01
+- ยังไม่เริ่มทำ task ใด ๆ ตามคำสั่ง
+
+---
+
+## [2026-09-23] [เวลาไม่ระบุ] คำสั่ง: /implement T-01 specs/001-booking/spec.md
+
+- เครื่องมือ: Copilot ใน Codespaces
+- ไฟล์ที่สร้าง: backend/app/models.py, backend/app/db.py, backend/migrations/001_booking_schema.sql
+- ไฟล์ที่แก้: specs/001-booking/tasks.md, prompt-log.md
+- ผล test: `python -m py_compile backend/app/models.py backend/app/db.py` ผ่าน; ตรวจ migration พบ 4 ตารางและไม่พบ national ID column
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี; ใช้ชนิดข้อมูลและสถานะตาม plan.md โดยไม่กำหนดกติกา Q-01/Q-02 เพิ่ม
+- สถานะ T-01: เสร็จ รอทีมตรวจ
+
+---

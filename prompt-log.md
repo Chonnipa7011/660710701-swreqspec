@@ -133,3 +133,12 @@
 - ผล `cd backend && pytest -v`: 7 passed, 0 failed, 1 warning; test เดิมและ test_TC ทั้ง 3 ยังอยู่
 - `git diff --check` ผ่าน; ไม่มีการแก้ test
 - `verify v1` commit `7b270b5` สำเร็จในเครื่อง แต่ push ไป origin ไม่สำเร็จเพราะ GitHub CLI ยังไม่ได้ล็อกอิน (`gh auth status`: not logged in)
+
+---
+
+## 2569-10-07 08.53 คำสั่ง: /testcases AC-BKG-02 specs/001-booking/
+
+- โหมด: เขียน test จากแถวที่ทีมกำหนดสถานะ "ใช้ได้"
+- เพิ่ม TC-BKG-02-1, TC-BKG-02-2, TC-BKG-02-3 ใน [specs/001-booking/test-cases.md](specs/001-booking/test-cases.md) และเพิ่ม test ตามชื่อใน [backend/tests/test_AC_BKG_02.py](backend/tests/test_AC_BKG_02.py)
+- TC-BKG-02-1 ตรวจการปฏิเสธและการคืน booking เดิม; การแสดงเลขคิวยังไม่ assert เพราะรอ Q-02
+- ผลก่อนทำ T-04: `cd backend && pytest -v` — 9 passed, 1 failed; TC-BKG-02-1 ได้ 201 แทนการปฏิเสธ; TC-BKG-02-2 และ TC-BKG-02-3 ผ่านตามเงื่อนไขไม่กันการจองข้ามวัน/คนอื่น

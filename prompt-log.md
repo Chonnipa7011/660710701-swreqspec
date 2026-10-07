@@ -119,3 +119,17 @@
 - ช่องโหว่ spec: FR-BKG-06 ไม่มี AC และ FR-BKG-01 ไม่มี AC ตรวจช่วง 30 วัน; รวมไว้ในคำถาม Q-04 (F-07, F-09)
 - TLS (F-08) ยังไม่มี deployment/runtime config ให้พิสูจ์ว่าถูกละเมิด จึงกำหนดให้ยืนยันที่ deployment
 - ทีมตัดสินสำหรับ NFR-SEC-01: ไม่ใช่ปัญหาใน source ณ ตอนนี้; ต้องยืนยัน TLS 1.2+ ที่ deployment/runtime ก่อนใช้งานจริง
+
+---
+
+## 2569-10-07 08.50 ขั้น 7: ปิดข้อค้นพบที่แก้ได้และตรวจซ้ำ
+
+- ปรับ SPEC-BKG-001 เป็น Draft v3 และเพิ่ม Q-03 (นโยบายเลขบัตรประชาชนใน log) และ Q-04 (เกณฑ์ยอมรับ FR-BKG-01/FR-BKG-06); เพิ่ม [specs/CHANGELOG.md](specs/CHANGELOG.md)
+- แก้ F-01: ไม่ออกหมายเลขคิวจนกว่าจะได้คำตอบ Q-02 (`queue_no=None`)
+- แก้ F-03: นำ `national_id` ออกจาก request และ log; เพิ่ม Q-03 ถามนโยบายในอนาคต
+- แก้ F-04: เปลี่ยนช่วงค้นหาเป็น 30 วันตาม FR-BKG-01
+- แก้ F-06: ลบ endpoint DELETE และฟังก์ชัน `cancel_booking` ตาม Out of scope UC-02
+- ย้าย F-01, F-03, F-04, F-06 ไปหัวข้อ "แก้แล้ว" ใน RTM โดยเก็บข้อความทีมตัดสิน; F-02/F-05/F-07/F-09 ยังเปิด; F-08 ตัดออกจากข้อค้นพบเพราะ TLS เป็นสิ่งที่ต้องตรวจที่ deployment/runtime
+- ผล `cd backend && pytest -v`: 7 passed, 0 failed, 1 warning; test เดิมและ test_TC ทั้ง 3 ยังอยู่
+- `git diff --check` ผ่าน; ไม่มีการแก้ test
+- `verify v1` commit `7b270b5` สำเร็จในเครื่อง แต่ push ไป origin ไม่สำเร็จเพราะ GitHub CLI ยังไม่ได้ล็อกอิน (`gh auth status`: not logged in)

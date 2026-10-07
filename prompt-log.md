@@ -89,3 +89,33 @@
 - รัน `cd backend && pytest -v`: 7 passed, 1 warning
 - test เดิม `test_AC_BKG_01` ยังอยู่ และเพิ่ม test ใหม่ครบ 3 รายการตามที่ระบุ
 - TC-BKG-01-1 ไม่ assert หมายเลขคิว เนื่องจากยังรอ Q-02
+
+---
+
+## 2569-10-07 08.41 คำสั่ง: /verify specs/001-booking/
+
+- อ่าน spec, plan, tasks, test-cases, AGENTS.md, source ทั้งหมดที่มีใน `backend/app/` และ `frontend/src/`, และ test ทั้งหมดของ backend/frontend
+- ผล test: `cd backend && pytest -v` — 7 passed, 0 failed, 1 warning; frontend มีเพียง setup test ไม่ได้รันชุด UI แยก
+- RTM: สร้าง [specs/001-booking/rtm.md](specs/001-booking/rtm.md) ตารางไปข้างหน้า 15 แถว: ครบ 0, ยังไม่ถึง 8, รอ Q-xx 0, ช่องโหว่ 7
+- ข้อค้นพบใหม่: F-01 ถึง F-09
+- ไม่แก้ source, test, spec, plan หรือ tasks ตามขอบเขตของ /verify
+
+---
+
+## 2569-10-07 08.45 ทบทวนผล /verify specs/001-booking/
+
+- ตรวจ `git status --short`: ไม่พบไฟล์ใน `backend/app/` หรือ `backend/tests/` ที่เปลี่ยนจากการตรวจ; ไม่มีการใช้ `git restore`
+- แยกผลตรวจเป็น 3 กลุ่ม: ข้อค้นพบที่มีหลักฐาน, งานที่ยังไม่ถึงตามสถานะ task, และการจัดประเภท/ข้อสรุปที่ AI ต้องแก้
+- ยืนยันช่องโหว่ spec: FR-BKG-06 ไม่มี AC; FR-BKG-01 ไม่มี AC ตรวจขอบเขต 30 วัน (AC-BKG-05 ตรวจ performance)
+- ทบทวน F-06: คงข้อค้นพบ endpoint ยกเลิกที่อยู่ใน Out of scope UC-02 แต่แก้ชนิดจาก "โค้ดไม่มี FR" เป็น "อ้าง ID ผิดเรื่อง" เนื่องจาก code comment อ้าง FR-BKG-04 ซึ่งเป็นเรื่องยืนยันการจอง
+- จำนวนตามตารางไปข้างหน้าใน RTM ฉบับนี้: 15 แถว — ครบ 0, ยังไม่ถึง 8, รอ Q-xx 0, ช่องโหว่ 7
+- ผล test ที่อ้างจากการรันล่าสุด: backend 7 passed, 0 failed
+- ไม่แก้โค้ดหรือ test; แก้เฉพาะคำอธิบายใน RTM และเพิ่มบันทึกนี้
+
+### ผลการทบทวนด้วย RE 5 คำถาม
+- เขียนทีมตัดสินครบทุกแถว F-01 ถึง F-09 ใน RTM
+- จุดที่ยืนยันจากคำถามข้อ 2, 3, 4: DAYS_AHEAD=14 ขัดกับ 30 วัน (F-04), ใช้ A001 ทั้งที่ Q-02 ยังเปิด (F-01), และรับ/log national_id โดยไม่มีเหตุจำเป็น (F-03); ทั้งสามข้อมีหลักฐานใน source และ RTM อยู่แล้ว จึงไม่สร้าง F-ID ซ้ำ
+- จุดของแถม/อ้าง ID: DELETE/cancel_booking เป็น Out of scope UC-02 และอ้าง FR-BKG-04 ผิดเรื่อง (F-06)
+- ช่องโหว่ spec: FR-BKG-06 ไม่มี AC และ FR-BKG-01 ไม่มี AC ตรวจช่วง 30 วัน; รวมไว้ในคำถาม Q-04 (F-07, F-09)
+- TLS (F-08) ยังไม่มี deployment/runtime config ให้พิสูจ์ว่าถูกละเมิด จึงกำหนดให้ยืนยันที่ deployment
+- ทีมตัดสินสำหรับ NFR-SEC-01: ไม่ใช่ปัญหาใน source ณ ตอนนี้; ต้องยืนยัน TLS 1.2+ ที่ deployment/runtime ก่อนใช้งานจริง

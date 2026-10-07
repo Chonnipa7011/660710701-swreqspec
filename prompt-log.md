@@ -55,3 +55,37 @@
 - ผล: เพิ่มแถวร่างใน [specs/001-booking/test-cases.md](specs/001-booking/test-cases.md) 3 แถว แล้วหยุดก่อนเขียนโค้ด
 - หมายเหตุ: รูปแบบหมายเลขคิวยังติด Q-02 จึงใส่ "(รอ Q-02)" ในส่วนที่ตรวจแสดงหมายเลขคิว
 - สถานะ: รอทีมตรวจแถวในตาราง และแก้สถานะเป็น "ใช้ได้" ก่อน จากนั้นสั่ง /testcases อีกครั้ง
+
+---
+
+## 2569-10-07 08.23 คำสั่ง: /testcases AC-BKG-01 specs/001-booking/
+
+- โหมด: ร่าง
+- AC ที่ตรวจ: AC-BKG-01
+- ผล: หยุดทันที เพราะ [specs/001-booking/test-cases.md](specs/001-booking/test-cases.md) ยังมีแถวทุกแถวสถานะ "ร่าง" และยังไม่ได้เปลี่ยนเป็น "ใช้ได้"
+- ข้อสรุป: ไม่เขียนโค้ด test จนกว่าเจ้าหน้าที่จะตรวจแถวแล้วปรับสถานะก่อน
+- ข้อแนะนำ: เปลี่ยนสถานะแถว AC-BKG-01 เป็น "ใช้ได้" แล้วสั่ง /testcases อีกครั้ง
+
+---
+
+## 2569-10-07 08.34 คำสั่ง: แก้โค้ดตามผล test AC-BKG-01
+
+- โหมด: แก้ไขระบบ
+- สาเหตุ: โค้ดใน [backend/app/booking/service.py](backend/app/booking/service.py) ตรวจว่า `slot.remaining < 0` จึงยอมให้จองเมื่อ `remaining == 0`
+- การแก้ไข: เปลี่ยนเงื่อนไขเป็น `slot.remaining <= 0` เพื่อให้ปฏิเสธที่นั่งเต็มตาม AC-BKG-01
+- ผลที่คาดหวัง: test_TC_BKG_01_2_no_seat_left ต้องตอบ 409 และไม่สร้างการจองใหม่
+
+---
+
+## 2569-10-07 08.39 คำสั่ง: ตรวจ AC-BKG-01 และเพิ่ม test ตามแถวที่ทีมอนุมัติ
+
+- โหมด: เขียน test
+- ก่อนแก้: backend เก็บ test เดิม 4 รายการ; [backend/tests/test_AC_BKG_01.py](backend/tests/test_AC_BKG_01.py) มี `test_AC_BKG_01` อยู่แล้ว
+- การแก้ไข: เพิ่ม `test_TC_BKG_01_1_last_seat`, `test_TC_BKG_01_2_no_seat_left`, `test_TC_BKG_01_3_not_authenticated` ต่อท้าย โดยคง test เดิมไว้
+- หมายเหตุ: ไม่ assert หมายเลขคิวในส่วนที่รอ Q-02
+- ผล test: รอผล `pytest -v`
+
+### ผลตรวจเพิ่มเติม
+- รัน `cd backend && pytest -v`: 7 passed, 1 warning
+- test เดิม `test_AC_BKG_01` ยังอยู่ และเพิ่ม test ใหม่ครบ 3 รายการตามที่ระบุ
+- TC-BKG-01-1 ไม่ assert หมายเลขคิว เนื่องจากยังรอ Q-02

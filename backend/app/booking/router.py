@@ -5,6 +5,7 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from starlette.responses import JSONResponse
 
 from app.auth.idp import get_verified_hn
 from app.booking import service
@@ -24,6 +25,16 @@ def create_booking(req: BookingRequest, hn: str = Depends(get_verified_hn), db: 
     logger.info("booking request slot=%s hn=%s", req.slot_id, hn)
     try:
         booking = service.create_booking(db, hn=hn, slot_id=req.slot_id)
+    except service.DuplicateBookingError as e:
+        existing = e.booking
+        return JSONResponse(
+            status_code=409,
+            content={
+                "booking_id": existing.id,
+                "slot_id": existing.slot_id,
+                "queue_no": existing.queue_no,
+            },
+        )
     except service.SlotFullError:
         raise HTTPException(status_code=409, detail="ช่วงเวลาเต็ม")
     except ValueError as e:

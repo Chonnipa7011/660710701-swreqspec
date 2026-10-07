@@ -142,3 +142,13 @@
 - เพิ่ม TC-BKG-02-1, TC-BKG-02-2, TC-BKG-02-3 ใน [specs/001-booking/test-cases.md](specs/001-booking/test-cases.md) และเพิ่ม test ตามชื่อใน [backend/tests/test_AC_BKG_02.py](backend/tests/test_AC_BKG_02.py)
 - TC-BKG-02-1 ตรวจการปฏิเสธและการคืน booking เดิม; การแสดงเลขคิวยังไม่ assert เพราะรอ Q-02
 - ผลก่อนทำ T-04: `cd backend && pytest -v` — 9 passed, 1 failed; TC-BKG-02-1 ได้ 201 แทนการปฏิเสธ; TC-BKG-02-2 และ TC-BKG-02-3 ผ่านตามเงื่อนไขไม่กันการจองข้ามวัน/คนอื่น
+
+---
+
+## 2569-10-07 08.55 คำสั่ง: /implement T-04 specs/001-booking/tasks.md
+
+- การแก้ไข: `create_booking` ปฏิเสธ booking ที่ยังมี status BOOKED สำหรับ HN เดิมและวันเดียวกัน และ route ส่ง booking เดิมกลับด้วย status 409
+- Q-02: queue_no ของ booking เดิมยังคงว่าง จึงไม่มีการ assert รูปแบบ/การแสดงหมายเลขคิว
+- test_TC_BKG_02_* ไม่ถูกแก้ระหว่าง implement
+- ผล `cd backend && pytest -v`: 10 passed, 0 failed, 1 warning
+- เปลี่ยนสถานะ T-04 เป็น "เสร็จ" และสรุป task เสร็จแล้วเป็น 4 task

@@ -1,7 +1,7 @@
 # Tasks: จองคิวตรวจสุขภาพ (Booking)
-Spec ID: SPEC-BKG-001 (Draft v2) | อ้างอิง: plan.md v1 | สร้างด้วย /tasks เมื่อ 2569-09-23 แก้รอบที่ 1 แล้ว
+Spec ID: SPEC-BKG-001 (Draft v3) | อ้างอิง: plan.md v1 | สร้างด้วย /tasks เมื่อ 2569-09-23 แก้รอบที่ 1 แล้ว
 
-สรุป: ทั้งหมด 12 task (หลังบ้าน 9 หน้าจอ 3) เสร็จแล้ว 3 task (T-01 ถึง T-03)
+สรุป: ทั้งหมด 12 task (หลังบ้าน 9 หน้าจอ 3) เสร็จแล้ว 4 task (T-01 ถึง T-04)
 รอ Open Question 1 task (T-06 รอ Q-02)
 
 ---
@@ -36,7 +36,7 @@ Spec ID: SPEC-BKG-001 (Draft v2) | อ้างอิง: plan.md v1 | สร้
 - ไฟล์ที่แตะ: backend/app/booking/service.py, backend/app/booking/router.py, backend/tests/test_AC_BKG_02.py
 - ต้องทำหลัง: T-03
 - เสร็จเมื่อ: test ของ AC-BKG-02 ทั้งหมดผ่าน (รวม test_TC_BKG_02_* ถ้ามี)
-- สถานะ: พร้อมทำ
+- สถานะ: เสร็จ
 
 ### T-05 เสนอช่วงเวลาใกล้เคียง 3 ตัวเลือกเมื่อเต็ม
 - รองรับ: FR-BKG-03

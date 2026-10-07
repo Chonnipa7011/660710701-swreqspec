@@ -152,3 +152,14 @@
 - test_TC_BKG_02_* ไม่ถูกแก้ระหว่าง implement
 - ผล `cd backend && pytest -v`: 10 passed, 0 failed, 1 warning
 - เปลี่ยนสถานะ T-04 เป็น "เสร็จ" และสรุป task เสร็จแล้วเป็น 4 task
+
+---
+
+## 2569-10-07 08.57 คำสั่ง: /verify specs/001-booking/ หลัง T-04
+
+- ผล `cd backend && pytest -v`: 10 passed, 0 failed, 1 warning
+- ปรับ [specs/001-booking/rtm.md](specs/001-booking/rtm.md): FR-BKG-02 เป็น "รอ Q-02"; เพิ่มการตามรอย test_TC_BKG_02_1 ถึง 02_3; คงข้อค้นพบเปิด F-02, F-05, F-07, F-09
+- ตารางตามรอย 15 แถว: ครบ 0, ยังไม่ถึง 10, รอ Q-02 1, ช่องโหว่ 4
+- อัปเดต [specs/001-booking/plan.md](specs/001-booking/plan.md) ให้อ้าง Draft v3 และแยกผล 409 กรณีคิวซ้ำกับช่วงเวลาเต็ม
+- Commit `3158b2d T-04 done` สำเร็จในเครื่อง; push ไม่สำเร็จเพราะไม่มี GitHub credentials
+- README.md มีการเปลี่ยนแปลงภายหลังจากการตรวจ; ไม่แก้และไม่ stage เพื่อรักษาการเปลี่ยนแปลงนอก scope

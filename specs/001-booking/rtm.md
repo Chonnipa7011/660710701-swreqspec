@@ -1,12 +1,12 @@
 # RTM: จองคิวตรวจสุขภาพ (Booking)
 อ้างอิง: spec.md Draft v3 | tasks.md | test-cases.md
-สร้างด้วย /verify เมื่อ 2569-10-07 08.51 | test: 7 ผ่าน 0 ไม่ผ่าน
+สร้างด้วย /verify เมื่อ 2569-10-07 08.57 | test: 10 ผ่าน 0 ไม่ผ่าน
 
 ## 1. ตามรอยไปข้างหน้า (requirement ไป โค้ด ไป test)
 | ID | AC | task | โค้ด (ไฟล์: ฟังก์ชัน) | test (ผล) | สถานะ |
 |---|---|---|---|---|---|
 | FR-BKG-01 | AC-BKG-05 (ตรวจเวลา ไม่ได้ตรวจช่วง 30 วัน) | T-02 เสร็จ | `backend/app/slots/router.py:get_slots`; `backend/app/slots/service.py:list_available_slots` | `test_AC_BKG_05` ผ่าน แต่ทดสอบแบบเรียกต่อเนื่อง ไม่ใช่ผู้ใช้พร้อมกัน 200 คน | ช่องโหว่: F-09 |
-| FR-BKG-02 | AC-BKG-02 | T-04 พร้อมทำ | ยังไม่มีการตรวจคิวเดิมใน `backend/app/booking/service.py:create_booking` | ไม่มี | ยังไม่ถึง |
+| FR-BKG-02 | AC-BKG-02 | T-04 เสร็จ | `backend/app/booking/service.py:create_booking`; `backend/app/booking/router.py:create_booking` | `test_TC_BKG_02_1_same_day_duplicate_rejected`, `test_TC_BKG_02_2_previous_day_booking_allowed`, `test_TC_BKG_02_3_other_person_same_day_allowed` ผ่าน; การตรวจหมายเลขคิวเดิมรอ Q-02 | รอ Q-02 |
 | FR-BKG-03 | AC-BKG-03 | T-05 พร้อมทำ; T-11/T-12 พร้อมทำ | มีเพียงการปฏิเสธช่วงเต็มใน `backend/app/booking/router.py:create_booking`; ยังไม่มีช่วงเวลาใกล้เคียง | ไม่มี | ยังไม่ถึง |
 | FR-BKG-04 | AC-BKG-01 | T-03 เสร็จ; T-06 รอ Q-02; การส่งข้อความยังไม่ทำใน T-07 | `backend/app/booking/service.py:create_booking`; `backend/app/booking/router.py:create_booking` | `test_TC_BKG_01_1_last_seat`, `test_TC_BKG_01_2_no_seat_left`, `test_TC_BKG_01_3_not_authenticated` ผ่าน; การแสดงคิวรอ Q-02; test เดิม `test_AC_BKG_01` ตรวจเพียง status 201 | ยังไม่ถึง: การส่งข้อความ T-07; รอ Q-02: การออก/แสดงเลขคิว |
 | FR-BKG-05 | AC-BKG-04 | T-07 พร้อมทำ | ไม่มี notify queue หรือ `GET /bookings/{id}` ใน `backend/app/` | ไม่มี | ยังไม่ถึง |
@@ -27,9 +27,9 @@
 | `backend/app/main.py:lifespan`, `app` | CON-TECH-01 | บางส่วน | สร้างตารางตอนเริ่มระบบและรวม router; ยังไม่ยืนยันการเชื่อม PostgreSQL |
 | `GET /slots` — `backend/app/slots/router.py:get_slots` | FR-BKG-01, FR-BKG-06 | ไม่ครบ | คืนวัน/เวลา/remaining และรับ package_code; จำกัดวันเป็น 30 วันตาม FR-BKG-01 แต่ไม่มี AC ตรวจ package change หรือขอบวัน 30 วัน |
 | `backend/app/slots/service.py:list_available_slots` | FR-BKG-01, FR-BKG-06, ASM-01 | บางส่วน | กรองแพ็กเกจและ remaining > 0; DAYS_AHEAD=30; ยังไม่มี AC/test ยืนยัน package change หรือขอบเขตวัน |
-| `POST /bookings` — `backend/app/booking/router.py:create_booking` | FR-BKG-02, FR-BKG-03, FR-BKG-04, IF-IDP-01, IF-HIS-01 | ไม่ครบ | ทำ booking เมื่อที่นั่งเหลือ; ยังไม่มีการกันจองซ้ำ/เสนอทางเลือก/ส่ง notification; ไม่รับหรือ log national_id; auth เป็น prefix mock |
-| `BookingRequest.slot_id`; response `booking_id`, `slot_id`, `queue_no` | FR-BKG-04, Q-02 | บางส่วน | slot_id สอดคล้องกับ API plan; queue_no เป็น null ระหว่างรอ Q-02 |
-| `backend/app/booking/service.py:create_booking` | FR-BKG-04 | บางส่วน | ปฏิเสธเมื่อ remaining <= 0, ลดที่นั่งและบันทึก booking; queue_no ยังว่างรอ Q-02; ยังไม่ส่งคำขอแจ้งเตือน |
+| `POST /bookings` — `backend/app/booking/router.py:create_booking` | FR-BKG-02, FR-BKG-03, FR-BKG-04, IF-IDP-01, IF-HIS-01 | ไม่ครบ | ปฏิเสธ booking ซ้ำของ HN เดิมในวันเดียวกันและคืน booking เดิม; ยังไม่มีเสนอช่วงเวลาใกล้เคียง/ส่ง notification; ไม่รับหรือ log national_id; auth เป็น prefix mock |
+| `BookingRequest.slot_id`; response `booking_id`, `slot_id`, `queue_no` | FR-BKG-02, FR-BKG-04, Q-02 | บางส่วน | slot_id สอดคล้องกับ API plan; duplicate response คืน booking_id/slot_id เดิม; queue_no เป็น null ระหว่างรอ Q-02 |
+| `backend/app/booking/service.py:create_booking` | FR-BKG-02, FR-BKG-04 | บางส่วน | ปฏิเสธเมื่อมี status BOOKED ของ HN เดิมในวันเดียวกัน; ปฏิเสธเมื่อ remaining <= 0, ลดที่นั่งและบันทึก booking; queue_no ยังว่างรอ Q-02; ยังไม่ส่งคำขอแจ้งเตือน |
 | `backend/app/auth/idp.py:get_verified_hn` | IF-IDP-01 | ไม่ครบ | เช็คเพียง token prefix จำลอง ไม่ได้รับผลยืนยันตัวตนจากระบบ IDP |
 | `backend/app/db/models.py:Slot`, `Booking`, `AuditLog` | FR-BKG-01/02/04/06, IF-HIS-01, DOM-PDPA-01 | บางส่วน | schema มี slot/booking/audit; ไม่มี national_id ใน bookings; queue_no ยังใช้รูปแบบที่ยังรอ Q-02 |
 | `backend/app/config.py:DATABASE_URL`, `backend/app/db/session.py:get_db` | CON-TECH-01 | ยังยืนยันไม่ได้ | ใช้ DATABASE_URL ได้ แต่ default เป็น SQLite และชุดทดสอบใช้ SQLite; ไม่มีผลยืนยัน PostgreSQL |
@@ -40,6 +40,9 @@
 | `backend/tests/test_AC_BKG_01.py:test_TC_BKG_01_1_last_seat` | AC-BKG-01 | บางส่วน | ตรวจ status, จำนวน booking, remaining; ไม่ assert หมายเลขคิวตาม Q-02 |
 | `backend/tests/test_AC_BKG_01.py:test_TC_BKG_01_2_no_seat_left` | AC-BKG-01 | ตรงกับแถวที่อนุมัติ | ตรวจ 409, ไม่มี booking ใหม่ และ remaining ยังเป็น 0 |
 | `backend/tests/test_AC_BKG_01.py:test_TC_BKG_01_3_not_authenticated` | AC-BKG-01, IF-IDP-01 | บางส่วน | ตรวจ 401, ไม่มี booking และ remaining ไม่เปลี่ยน; ไม่ทดสอบ IDP จริง |
+| `backend/tests/test_AC_BKG_02.py:test_TC_BKG_02_1_same_day_duplicate_rejected` | AC-BKG-02, FR-BKG-02 | บางส่วน | ตรวจปฏิเสธและคืน booking เดิม; ไม่ตรวจการแสดงเลขคิวเพราะรอ Q-02 |
+| `backend/tests/test_AC_BKG_02.py:test_TC_BKG_02_2_previous_day_booking_allowed` | AC-BKG-02, FR-BKG-02 | ตรงกับแถวที่อนุมัติ | ตรวจว่าคิวในวันก่อนหน้าไม่ขัดขวางการจองในวันถัดไป |
+| `backend/tests/test_AC_BKG_02.py:test_TC_BKG_02_3_other_person_same_day_allowed` | AC-BKG-02, FR-BKG-02 | ตรงกับแถวที่อนุมัติ | ตรวจว่าคิวของผู้รับบริการคนอื่นไม่ขัดขวางการจองของผู้ใช้ปัจจุบัน |
 | `backend/tests/test_AC_BKG_05.py:test_AC_BKG_05` | AC-BKG-05, NFR-PERF-01 | อ่อน | ตรวจ status 200 และ p95 จาก 200 requests แบบ sequential ไม่ใช่ 200 concurrent users |
 | `backend/tests/test_T01_schema.py:test_T01_tables_created`, `test_T01_no_national_id` | CON-TECH-01, DOM-PDPA-01, IF-HIS-01 | บางส่วน | ตรวจ schema บน SQLite เท่านั้น ไม่ตรวจ audit logging หรือ HIS integration |
 | `frontend/src/__tests__/setup.test.jsx` | ไม่มี AC | ไม่เกี่ยวกับ AC | ตรวจเพียงว่า placeholder แสดงหัวเรื่องได้; ไม่มี frontend AC test |

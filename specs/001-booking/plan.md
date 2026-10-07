@@ -1,5 +1,5 @@
 # Plan: จองคิวตรวจสุขภาพ (Booking)
-อ้างอิง: spec.md SPEC-BKG-001 Draft v2 | Updated: 2569-09-22 | สร้างด้วย /plan แล้วทีมตรวจแล้ว (plan v1)
+อ้างอิง: spec.md SPEC-BKG-001 Draft v3 | Updated: 2569-10-07 | สร้างด้วย /plan แล้วทีมตรวจแล้ว (plan v1)
 
 ## 1. สรุปแนวทาง
 - ผู้รับบริการที่ยืนยันตัวตนแล้ว ค้นช่วงเวลาว่าง เลือก แล้วยืนยันการจอง ได้หมายเลขคิวกลับทันที
@@ -82,7 +82,7 @@ frontend/                      React (Vite) + Tailwind CSS มีโครงเ
 | รายการ | input / output หลัก | รองรับ |
 |---|---|---|
 | GET /slots | in: date_from, package_code / out: รายการช่วงเวลา + ที่นั่งคงเหลือ | FR-BKG-01, FR-BKG-06 |
-| POST /bookings | in: slot_id / out: booking id, queue_no หรือ 409 พร้อมช่วงใกล้เคียง 3 ช่วง | FR-BKG-02, FR-BKG-03, FR-BKG-04 |
+| POST /bookings | in: slot_id / out: booking id, queue_no; ถ้ามีคิวเดิมวันเดียวกันตอบ 409 พร้อม booking เดิม; ถ้าช่วงเวลาเต็มตอบ 409 พร้อมช่วงใกล้เคียง 3 ช่วง | FR-BKG-02, FR-BKG-03, FR-BKG-04 |
 | GET /bookings/{id} | out: รายละเอียดการจอง + queue_no | FR-BKG-05 |
 | GET /patients/lookup | in: เลขบัตร (ส่งต่อไป HIS ไม่เก็บ) / out: hn | IF-HIS-01 |
 | หน้าเลือกแพ็กเกจและเวลา (SlotPicker) | เรียก GET /slots เปลี่ยนแพ็กเกจแล้วโหลดช่วงเวลาใหม่ | FR-BKG-01, FR-BKG-06 |
